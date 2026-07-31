@@ -13,7 +13,7 @@ namespace NSprites
         internal readonly Dictionary<int, ComponentType> PropertyMap = new();
         /// <summary> All whenever registered render archetypes. Each registered archetype will be updated every frame no matter if there is any entities. </summary>
         internal readonly List<RenderArchetype> RenderArchetypes = new();
-        internal readonly HashSet<int> RegisteredIds = new();
+        internal readonly HashSet<ulong> RegisteredIds = new();
         /// <summary> System's state with all necessary data to pass to <see cref="RenderArchetype"/> to update </summary>
         internal SystemData SystemData;
 
@@ -25,7 +25,7 @@ namespace NSprites
         
         internal void Initialize() => GatherPropertiesTypes();
 
-        public bool ContainsRender(in int id) => RegisteredIds.Contains(id);
+        public bool ContainsRender(in ulong id) => RegisteredIds.Contains(id);
 
         public void Clear()
         {
@@ -78,7 +78,7 @@ namespace NSprites
         /// <param name="initialCapacity">compute buffers initial capacity.</param>
         /// <param name="capacityStep">compute buffers capacity increase step when the current limit on the number of entities is exceeded.</param>
         /// </summary>
-        public void RegisterRender(in int id, Material material, in Bounds bounds, MaterialPropertyBlock materialPropertyBlock = null, in int initialCapacity = 1, in int capacityStep = 1, params PropertyData[] propertyDataSet)
+        public void RegisterRender(in ulong id, Material material, in Bounds bounds, MaterialPropertyBlock materialPropertyBlock = null, in int initialCapacity = 1, in int capacityStep = 1, params PropertyData[] propertyDataSet)
             => RegisterRender(id, material, Quad, bounds, materialPropertyBlock, initialCapacity, capacityStep, propertyDataSet);
         
         /// <summary>
@@ -93,7 +93,7 @@ namespace NSprites
         /// <param name="initialCapacity">compute buffers initial capacity.</param>
         /// <param name="capacityStep">compute buffers capacity increase step when the current limit on the number of entities is exceeded.</param>
         /// </summary>
-        public void RegisterRender(in int id, Material material, Mesh mesh, in Bounds bounds, MaterialPropertyBlock materialPropertyBlock = null, in int initialCapacity = 1, in int capacityStep = 1, params PropertyData[] propertyDataSet)
+        public void RegisterRender(in ulong id, Material material, Mesh mesh, in Bounds bounds, MaterialPropertyBlock materialPropertyBlock = null, in int initialCapacity = 1, in int capacityStep = 1, params PropertyData[] propertyDataSet)
         {
 #if UNITY_EDITOR || DEVELOPEMENT_BUILD
             if (RegisteredIds.Contains(id))

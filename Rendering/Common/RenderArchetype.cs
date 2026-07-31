@@ -131,7 +131,7 @@ namespace NSprites
 #endif
 
         /// id to query entities using <see cref="SpriteRenderID"/>
-        internal readonly int ID;
+        internal readonly ulong ID;
         internal readonly Material Material;
         private readonly Mesh _mesh;
         private readonly Bounds _bounds;
@@ -180,7 +180,7 @@ namespace NSprites
 #endif
 
         public RenderArchetype(Material material, Mesh mesh, in Bounds bounds, IReadOnlyList<PropertyData> propertyDataSet
-            , IReadOnlyDictionary<int, ComponentType> propertyMap, int id
+            , IReadOnlyDictionary<int, ComponentType> propertyMap, ulong id
             , MaterialPropertyBlock override_MPB = null, int preallocatedSpace = 1, int minCapacityStep = 1)
         {
 #if UNITY_EDITOR

@@ -4,6 +4,6 @@ namespace NSprites
 {
     public struct SpriteRenderID : ISharedComponentData
     {
-        public int id;
+        public ulong id;
     }
 }
