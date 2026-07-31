@@ -80,6 +80,21 @@ namespace NSprites
         {
             AddSpriteRenderComponents(entity, entityManager, renderID, hasPointerComponents);
         }
+
+        /// <summary>
+        /// Runtime reveal helper for an ALREADY-spawned entity — identical effect to
+        /// <see cref="AddSpriteRenderComponents(in Entity, in EntityManager, in int, in bool)"/>
+        /// (adds <see cref="SpriteRenderID"/> + <see cref="PropertyPointer"/> +
+        /// <see cref="PropertyPointerChunk"/>), but lives in a SINGLE-method group so a caller's
+        /// overload resolution never touches the <c>Baker&lt;&gt;</c> extension overloads — and
+        /// thus never has to reference <c>Unity.Entities.Hybrid</c>. Use from a runtime system
+        /// (e.g. a lazy render-id resolver) that must not depend on the authoring assembly.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void RevealSpriteRenderComponents(in Entity entity, in EntityManager entityManager, in int renderID = default, in bool hasPointerComponents = true)
+        {
+            AddSpriteRenderComponents(entity, entityManager, renderID, hasPointerComponents);
+        }
         /// <summary><inheritdoc cref="AddSpriteRenderComponents(in EntityQuery, in EntityManager, in int, in bool)"/></summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AddSpriteRenderComponents(this in EntityManager entityManager, in EntityQuery query, in int renderID = default, in bool hasPointerComponents = true)
