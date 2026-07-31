@@ -2,7 +2,7 @@
 
 namespace NSprites
 {
-    internal struct PropertyPointerChunk : IComponentData
+    public struct PropertyPointerChunk : IComponentData
     {
         public int From;
         public bool Initialized;
