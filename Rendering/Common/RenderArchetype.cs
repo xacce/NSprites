@@ -293,7 +293,17 @@ namespace NSprites
                 // NOTE: allocated space can be enough at the same time with unused space isn't for new chunks.
                 // this is because chunks may be destroyed but we don't track it so summary capacity will decrease,
                 // but freed space has arbitrary position if buffer with arbitrary length, so we can't reuse it until full chunks remap
-                if (overallCapacityExceeded || createdChunksCapacity > ReactiveAndStaticAllocationCounter.Unused)
+
+                // FORK: chunk which LEFT the query and then came back is not "created": `PropertyPointerChunk`
+                // is a chunk component, and a whole-chunk archetype move (`EntityManager.AddComponent(query, T)`
+                // and its removal — how a view switch hides and shows the galaxy) carries its value over, so
+                // `Initialized` stays true and the chunk brings a stale `From` with it. Such capacity is
+                // counted in neither `Used` nor `createdChunksCapacity`, and the frame ends with mappings
+                // pointing outside the used range — `Verify` throws exactly this. `needed > Used` is the same
+                // postcondition `Verify` asserts, so requiring a full remap here makes it hold by construction.
+                if (overallCapacityExceeded
+                    || createdChunksCapacity > ReactiveAndStaticAllocationCounter.Unused
+                    || neededOverallCapacity > ReactiveAndStaticAllocationCounter.Used)
                 {
                     // reassign all chunk's / entity's indices
                     // this job will iterate through chunks one by one and increase theirs `from` indices
