@@ -13,15 +13,15 @@ namespace NSprites
     public static partial class NSpritesUtils
     {
         #region add components methods
-        /// <summary><inheritdoc cref="AddSpriteRenderComponents(in Entity, in EntityManager, in ulong, in bool)"/></summary>
+        /// <summary><inheritdoc cref="AddSpriteRenderComponents(in Entity, in EntityManager, in int, in bool)"/></summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void AddSpriteRenderComponents<TAuthoringType>(this Baker<TAuthoringType> baker, in ulong renderID = default, in bool hasPointerComponents = true)
+        public static void AddSpriteRenderComponents<TAuthoringType>(this Baker<TAuthoringType> baker, in int renderID = default, in bool hasPointerComponents = true)
             where TAuthoringType : Component 
             => baker.AddSpriteRenderComponents(baker.GetEntity(TransformUsageFlags.None), renderID, hasPointerComponents);
 
-        /// <summary><inheritdoc cref="AddSpriteRenderComponents(in Entity, in EntityManager, in ulong, in bool)"/></summary>
+        /// <summary><inheritdoc cref="AddSpriteRenderComponents(in Entity, in EntityManager, in int, in bool)"/></summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void AddSpriteRenderComponents<TAuthoringType>(this Baker<TAuthoringType> baker, in Entity entity, in ulong renderID = default, in bool hasPointerComponents = true)
+        public static void AddSpriteRenderComponents<TAuthoringType>(this Baker<TAuthoringType> baker, in Entity entity, in int renderID = default, in bool hasPointerComponents = true)
             where TAuthoringType : Component
         {
             baker.AddSharedComponent(entity, new SpriteRenderID { id = renderID });
@@ -42,7 +42,7 @@ namespace NSprites
         /// <br>* <see cref="PropertyPointerChunk"></see> to entity's chunk (empty, will automatically initialized by render system)</br>
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void AddSpriteRenderComponents(in Entity entity, in EntityManager entityManager, in ulong renderID = default, in bool hasPointerComponents = true)
+        public static void AddSpriteRenderComponents(in Entity entity, in EntityManager entityManager, in int renderID = default, in bool hasPointerComponents = true)
         {
             entityManager.AddSharedComponent(entity, new SpriteRenderID { id = renderID });
 
@@ -62,7 +62,7 @@ namespace NSprites
         /// <br>* <see cref="PropertyPointerChunk"></see> to entity's chunk (empty, will automatically initialized by render system)</br>
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void AddSpriteRenderComponents(in EntityQuery query, in EntityManager entityManager, in ulong renderID = default, in bool hasPointerComponents = true)
+        public static void AddSpriteRenderComponents(in EntityQuery query, in EntityManager entityManager, in int renderID = default, in bool hasPointerComponents = true)
         {
             entityManager.AddSharedComponent(query, new SpriteRenderID { id = renderID });
 #if !NSPRITES_REACTIVE_PROPERTIES_DISABLE || !NSPRITES_STATIC_PROPERTIES_DISABLE
@@ -74,30 +74,15 @@ namespace NSprites
                 ));
 #endif
         }
-        /// <summary><inheritdoc cref="AddSpriteRenderComponents(in Entity, in EntityManager, in ulong, in bool)"/></summary>
+        /// <summary><inheritdoc cref="AddSpriteRenderComponents(in Entity, in EntityManager, in int, in bool)"/></summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void AddSpriteRenderComponents(this in EntityManager entityManager, in Entity entity, in ulong renderID = default, in bool hasPointerComponents = true)
+        public static void AddSpriteRenderComponents(this in EntityManager entityManager, in Entity entity, in int renderID = default, in bool hasPointerComponents = true)
         {
             AddSpriteRenderComponents(entity, entityManager, renderID, hasPointerComponents);
         }
-
-        /// <summary>
-        /// Runtime reveal helper for an ALREADY-spawned entity — identical effect to
-        /// <see cref="AddSpriteRenderComponents(in Entity, in EntityManager, in ulong, in bool)"/>
-        /// (adds <see cref="SpriteRenderID"/> + <see cref="PropertyPointer"/> +
-        /// <see cref="PropertyPointerChunk"/>), but lives in a SINGLE-method group so a caller's
-        /// overload resolution never touches the <c>Baker&lt;&gt;</c> extension overloads — and
-        /// thus never has to reference <c>Unity.Entities.Hybrid</c>. Use from a runtime system
-        /// (e.g. a lazy render-id resolver) that must not depend on the authoring assembly.
-        /// </summary>
+        /// <summary><inheritdoc cref="AddSpriteRenderComponents(in EntityQuery, in EntityManager, in int, in bool)"/></summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void RevealSpriteRenderComponents(in Entity entity, in EntityManager entityManager, in ulong renderID = default, in bool hasPointerComponents = true)
-        {
-            AddSpriteRenderComponents(entity, entityManager, renderID, hasPointerComponents);
-        }
-        /// <summary><inheritdoc cref="AddSpriteRenderComponents(in EntityQuery, in EntityManager, in ulong, in bool)"/></summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void AddSpriteRenderComponents(this in EntityManager entityManager, in EntityQuery query, in ulong renderID = default, in bool hasPointerComponents = true)
+        public static void AddSpriteRenderComponents(this in EntityManager entityManager, in EntityQuery query, in int renderID = default, in bool hasPointerComponents = true)
         {
             AddSpriteRenderComponents(query, entityManager, renderID, hasPointerComponents);
         }

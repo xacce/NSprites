@@ -2,7 +2,7 @@
 
 namespace NSprites
 {
-    public struct PropertyPointer : IComponentData
+    internal struct PropertyPointer : IComponentData
     {
         public const string PropertyName = "_propertyPointers";
 
