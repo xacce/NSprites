@@ -5,7 +5,11 @@ namespace NSprites
 {
     [UpdateInGroup(typeof(PresentationSystemGroup))]
     [UpdateBefore(typeof(SpriteRenderingSystem))]
-    [WorldSystemFilter(WorldSystemFilterFlags.Default | WorldSystemFilterFlags.Editor | WorldSystemFilterFlags.EntitySceneOptimizations)]
+    // EntitySceneOptimizations здесь быть НЕ МОЖЕТ: оптимизация испечённой сцены поднимает свои
+    // системы через GetOrCreateSystemManaged, а это ISystem, и на каждом импорте сабсцены
+    // прилетало «cannot be constructed as it does not inherit from ComponentSystemBase».
+    // Потери нет: чанк-компонент дописывается в Default- и Editor-мире всё равно.
+    [WorldSystemFilter(WorldSystemFilterFlags.Default | WorldSystemFilterFlags.Editor)]
     public partial struct AddMissedRenderingComponentSystem : ISystem
     {
         private EntityQuery _query;
